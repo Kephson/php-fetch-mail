@@ -6,6 +6,18 @@ It's based on https://github.com/kirilkirkov/PHP-IMAP-Messages-Fetcher and exten
 > This script allows to fetch e-mails from a mailbox via PHP IMAP functions.
 > It reads the mails and write them to .eml-files and also writes the attachments if some exist.
 
+The following PHP extensions are needed to run the project:
+
+* ext-json
+* ext-simplexml
+* ext-imap
+* ext-mbstring
+* ext-iconv
+
+The installation with the package manager [Composer](https://getcomposer.org/) is recommended.
+
+Install it with **composer require ehaerer/php-fetch-mail**.
+
 ## 1 Features
 
 * Use it via commandline
@@ -99,7 +111,9 @@ If set, only mails with the attachments defined in allowedFileExt will be proces
 
 #### Execute via webserver, e.g. ddev
 
-Point your webserver to the public folder
+Use a local development environment like [ddev local](https://github.com/drud/ddev/) to use a local webserver.
 
-Run you URL http://fetch-mail.ddev.site/index.php.
+Point your webserver to the public folder (a ddev configuration is still in the project).
+
+Run the local URL https://php-fetch-mail.ddev.site/index.php e.g. with ddev.
 

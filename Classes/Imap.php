@@ -816,15 +816,13 @@ class Imap
 
     /**
      * @param array $message The preprocessed mail
-     * @param string $fileExtension
      * @return bool
      */
     private function saveMailToFile(
-        $message,
-        $fileExtension = 'eml'
+        $message
     ): bool
     {
-        $success = false;
+        $fileExtension = 'eml';
         $contentFromTemplate = file_get_contents($this->privatePath . "templates/template.eml");
         $content = str_replace(
             ['[TPL_RAW_HEADER]', '[TPL_MESSAGE]'],
