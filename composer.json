@@ -21,5 +21,10 @@
 		"ext-imap": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"EHAERER\\FetchMail\\": "Classes/"
+		}
 	}
 }

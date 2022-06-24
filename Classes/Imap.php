@@ -1,7 +1,7 @@
 <?php
 /** @noinspection PhpMissingParamTypeInspection */
 
-namespace EHAERER\Mail;
+namespace EHAERER\FetchMail;
 
 /* * *************************************************************
  *  Copyright notice

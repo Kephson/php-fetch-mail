@@ -3,7 +3,7 @@
 $privatePath = str_replace('public', '', __DIR__);
 require $privatePath . 'Classes/Imap.php';
 
-use EHAERER\Mail\Imap;
+use EHAERER\FetchMail\Imap;
 
 $options = [
     'DISABLE_AUTHENTICATOR' => 'GSSAPI',
