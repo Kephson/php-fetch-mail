@@ -198,22 +198,28 @@ class Imap
     /**
      * set the login credentials of the mailbox, exit if no credentials could be found
      *
-     * @param mixed $key
+     * @param mixed $credentialKey
+     * @param array $credentialArray
      * @return void
      */
-    public function setCredentials($key): void
+    public function setCredentials($credentialKey, $credentialArray = []): void
     {
-        $configFile = $this->privatePath . 'login/config.php';
         $loginDataFound = false;
-        if (is_file($configFile)) {
-            $loginData = include $this->privatePath . 'login/config.php';
-            if (isset($loginData[$key])) {
-                $this->loginCredentials = $loginData[$key];
-                $loginDataFound = true;
+        if (!empty($credentialArray)) {
+            $this->loginCredentials = $credentialArray;
+            $loginDataFound = true;
+        } else {
+            $configFile = $this->privatePath . 'login/config.php';
+            if (is_file($configFile)) {
+                $loginData = include $this->privatePath . 'login/config.php';
+                if (isset($loginData[$credentialKey])) {
+                    $this->loginCredentials = $loginData[$credentialKey];
+                    $loginDataFound = true;
+                }
             }
         }
         if (!$loginDataFound) {
-            print 'No config file found!';
+            print 'No configuration for mailbox found!';
             exit(-1);
         }
     }
@@ -239,16 +245,17 @@ class Imap
     }
 
     /**
-     * @param int $credentials
+     * @param mixed $credentialKey
      * @param int $options
      * @param int $n_retries
      * @param array $params
+     * @param array $credentialArray
      * @return bool
      */
-    public function connect($credentials = 0, $options = 0, $n_retries = 0, $params = [])
+    public function connect($credentialKey = 0, $options = 0, $n_retries = 0, $params = [], $credentialArray = [])
     {
         if (!$this->isCli()) {
-            $this->setCredentials($credentials);
+            $this->setCredentials($credentialKey, $credentialArray);
         }
         $connection = imap_open(
             $this->loginCredentials['hostname'] . $this->loginCredentials['defaultFolder'],
@@ -580,7 +587,7 @@ class Imap
      * @param int $append
      * @return void
      */
-    private function setFileName($text, $mailUid, $date, $append = '')
+    private function setFileName($text, $mailUid, $date, $append = 0)
     {
         $appendix = $append ? '_' . $append : '';
         $this->fileExt = pathinfo($this->decode($text), PATHINFO_EXTENSION);
