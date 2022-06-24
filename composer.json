@@ -1,0 +1,25 @@
+{
+	"name": "ehaerer/php-fetch-mail",
+	"description": "PHP-library to fetch e-mails from an SMTP mailbox to store the e-mail and attachment(s).",
+	"type": "project",
+	"license": "GPL",
+	"authors": [
+		{
+			"name": "Ephraim Härer",
+			"email": "mail@ephra.im"
+		}
+	],
+	"config": {
+		"platform": {
+			"php": "7.4"
+		}
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"ext-json": "*",
+		"ext-simplexml": "*",
+		"ext-imap": "*",
+		"ext-mbstring": "*",
+		"ext-iconv": "*"
+	}
+}
