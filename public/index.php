@@ -17,7 +17,7 @@ if ($connection_result !== true) {
 }
 
 print "--- Reading mailbox... ---";
-$messages = $imap->getMessages('desc', true, 100, 'input/','',false,'',false);
+$messages = $imap->getMessages('desc', true, 100, 'input/', '', false, '', false);
 //$imap->deleteAllMessages($messages);
 $imap->disconnect();
 $imap->printOutMessages($messages);

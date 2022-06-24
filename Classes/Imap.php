@@ -483,9 +483,9 @@ class Imap
             (isset($structure->subtype) && strtolower($structure->subtype) === 'rfc822')
         ) {
             if (isset($parameters['filename'])) {
-                $this->setFileName($parameters['filename'], $uid, $date, $partIdentifier);
+                $this->setFileName($parameters['filename'], $uid, $date);
             } elseif (isset($parameters['name'])) {
-                $this->setFileName($parameters['name'], $uid, $date, $partIdentifier);
+                $this->setFileName($parameters['name'], $uid, $date);
             }
             $this->encoding = $structure->encoding;
             $resultSave = $this->saveToDirectory($this->inputDir, $uid, $partIdentifier);
@@ -582,10 +582,10 @@ class Imap
      */
     private function setFileName($text, $mailUid, $date, $append = '')
     {
-        $appendix = '_' . $append;
+        $appendix = $append ? '_' . $append : '';
         $this->fileExt = pathinfo($this->decode($text), PATHINFO_EXTENSION);
-        $filename = date('YmdHis', $date) . '_' . $mailUid . $appendix . '.' . $this->fileExt;
-        if (file_exists($filename)) {
+        $filename = str_replace('.' . $this->fileExt, '', $text) . $appendix . '.' . $this->fileExt;
+        if (file_exists($this->inputDir . $filename)) {
             $appendRaised = $append + 1;
             $this->setFileName($text, $mailUid, $date, $appendRaised);
         }
@@ -684,7 +684,7 @@ class Imap
      */
     private function getParametersFromStructure($structure)
     {
-        $parameters = array();
+        $parameters = [];
         if (isset($structure->parameters)) {
             foreach ($structure->parameters as $parameter) {
                 $parameters[strtolower($parameter->attribute)] = $parameter->value;
@@ -831,19 +831,11 @@ class Imap
             [$this->rawMail['header'], $this->rawMail['body']],
             $contentFromTemplate
         );
-        if (count($message['attachments']) > 0) {
-            foreach ($message['attachments'] as $attachment) {
-                $file = $this->inputDir . str_replace(pathinfo($attachment, PATHINFO_EXTENSION), 'eml', $attachment);
-                $fileHandle = fopen($file, 'wb+');
-                $success = fwrite($fileHandle, $content);
-                fclose($fileHandle);
-            }
-        } else {
-            $file = $this->inputDir . date('YmdHis', $message['date']) . '_' . $message['uid'] . '.' . $fileExtension;
-            $fileHandle = fopen($file, 'wb+');
-            $success = fwrite($fileHandle, $content);
-            fclose($fileHandle);
-        }
+        $messageFrom = $message['from'][0]['address'] ? '_' . $message['from'][0]['address'] : '';
+        $file = $this->inputDir . date('Ymd-Hi', $message['date']) . $messageFrom . '.' . $fileExtension;
+        $fileHandle = fopen($file, 'wb+');
+        $success = fwrite($fileHandle, $content);
+        fclose($fileHandle);
 
         return $success;
     }
