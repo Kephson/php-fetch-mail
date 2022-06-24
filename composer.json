@@ -2,7 +2,7 @@
 	"name": "ehaerer/php-fetch-mail",
 	"description": "PHP-library to fetch e-mails from an SMTP mailbox to store the e-mail and attachment(s).",
 	"type": "project",
-	"license": "GPL",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Ephraim Härer",
