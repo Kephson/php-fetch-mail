@@ -254,7 +254,7 @@ class Imap
      */
     public function connect($credentialKey = 0, $options = 0, $n_retries = 0, $params = [], $credentialArray = [])
     {
-        if (!$this->isCli()) {
+        if (!$this->isCli() || !empty($credentialArray)) {
             $this->setCredentials($credentialKey, $credentialArray);
         }
         $connection = imap_open(
@@ -299,10 +299,11 @@ class Imap
         $allowedFileExt = '',
         $delete = false,
         $mailTargetFolder = '',
-        $attachmentsRequired = false
+        $attachmentsRequired = false,
+        $ignoreCli = false
     )
     {
-        if (!$this->isCli()) {
+        if (!$this->isCli() || $ignoreCli) {
             $this->setLimit($limit);
             $this->setInputDir($inputDir);
             $this->setAllowedFileExt($allowedFileExt);
