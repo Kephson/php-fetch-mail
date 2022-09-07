@@ -9,13 +9,9 @@
 			"email": "mail@ephra.im"
 		}
 	],
-	"config": {
-		"platform": {
-			"php": "7.4"
-		}
-	},
 	"minimum-stability": "dev",
 	"require": {
+		"php": "^7.4 || ^8.0",
 		"ext-json": "*",
 		"ext-simplexml": "*",
 		"ext-imap": "*",
