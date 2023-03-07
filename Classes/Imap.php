@@ -68,6 +68,11 @@ class Imap
     private $inputDir;
 
     /**
+     * @var string
+     */
+    private $attachmentDir;
+
+    /**
      * Default read limit of mails
      *
      * @var int
@@ -185,6 +190,7 @@ class Imap
     }
 
     /**
+     * creates also an attachment directory
      * @param string $inputDir Absolute path to save the files to
      */
     public function setInputDir(string $inputDir): void
@@ -192,7 +198,12 @@ class Imap
         if (!is_dir($inputDir) && !mkdir($inputDir, 0777, true) && !is_dir($inputDir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $inputDir));
         }
+        $attachmentDir = $inputDir . 'attachments/';
+        if (!is_dir($attachmentDir) && !mkdir($attachmentDir, 0777, true) && !is_dir($attachmentDir)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $attachmentDir));
+        }
         $this->inputDir = $inputDir;
+        $this->attachmentDir = $attachmentDir;
     }
 
     /**
@@ -496,7 +507,7 @@ class Imap
                 $this->setFileName($parameters['name'], $uid, $date);
             }
             $this->encoding = $structure->encoding;
-            $resultSave = $this->saveToDirectory($this->inputDir, $uid, $partIdentifier);
+            $resultSave = $this->saveToDirectory($this->attachmentDir, $uid, $partIdentifier);
             if ($resultSave === true) {
                 $this->attachments[] = $this->filename;
             }
@@ -505,7 +516,7 @@ class Imap
              * set array with key of cid and value of filename
              * after that we replace it in html body
              */
-            if ($parameters['disposition'] === 'INLINE') {
+            if (isset($parameters['disposition']) && $parameters['disposition'] === 'INLINE') {
                 $parameters['id'] = str_replace('<', '', $parameters['id']);
                 $parameters['id'] = str_replace('>', '', $parameters['id']);
                 $this->inlineAttachments[$parameters['id']] = $this->filename;
@@ -573,7 +584,7 @@ class Imap
             if (!empty($cids)) {
                 $message = mb_ereg_replace(
                     '/"cid:(.*?)"/',
-                    '"' . $this->inputDir . $this->inlineAttachments[$cids[1]] . '"',
+                    '"' . $this->attachmentDir . $this->inlineAttachments[$cids[1]] . '"',
                     $message
                 );
             }
@@ -593,7 +604,7 @@ class Imap
         $appendix = $append ? '_' . $append : '';
         $this->fileExt = pathinfo($this->decode($text), PATHINFO_EXTENSION);
         $filename = str_replace('.' . $this->fileExt, '', $text) . $appendix . '.' . $this->fileExt;
-        if (file_exists($this->inputDir . $filename)) {
+        if (file_exists($this->attachmentDir . $filename)) {
             $appendRaised = $append + 1;
             $this->setFileName($text, $mailUid, $date, $appendRaised);
         }
