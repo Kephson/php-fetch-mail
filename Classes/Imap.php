@@ -6,8 +6,8 @@ namespace EHAERER\FetchMail;
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2021-2022 Ephraim Härer <mail@ephra.im>
- *  GitHub repo: https://github.com/kephson
+ *  (c) 2021-2023 Ephraim Härer <mail@ephra.im>
+ *  GitHub repo: https://github.com/Kephson/php-fetch-mail
  *  This class is based on https://github.com/kirilkirkov/PHP-IMAP-Messages-Fetcher
  *  Usage example:
  *  1.  $imap = new Imap();
@@ -521,7 +521,7 @@ class Imap
                 $parameters['id'] = str_replace('>', '', $parameters['id']);
                 $this->inlineAttachments[$parameters['id']] = $this->filename;
             }
-        } elseif ($structure->type === 0 || $structure->type === 1) {
+        } elseif (isset($structure->type) && ($structure->type === 0 || $structure->type === 1)) {
             if (isset($partIdentifier)) {
                 $messageBody = imap_fetchbody($this->imapStream, $uid, $partIdentifier, FT_UID | FT_PEEK);
                 $messageBodyRaw = imap_body($this->imapStream, $uid, FT_UID | FT_PEEK);
