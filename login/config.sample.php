@@ -4,7 +4,7 @@
 return [
     0 => [
         /* SMTP hostname with path, e.g. {myimap-server.com:993/imap/ssl}INBOX */
-        'hostname' => '{myimap-server.com.com:993/imap/ssl}',
+        'hostname' => '{myimap-server.com:993/imap/ssl}',
         /* default folder to read from */
         'defaultFolder' => 'INBOX',
         /* SMTP username */
@@ -14,7 +14,7 @@ return [
     ],
     1 => [
         /* SMTP hostname with path, e.g. {myimap-server.com:993/imap/ssl}INBOX */
-        'hostname' => '{myimap-server.com.com:993/imap/ssl}',
+        'hostname' => '{myimap-server.com:993/imap/ssl}',
         /* default folder to read from */
         'defaultFolder' => 'INBOX',
         /* SMTP username */
@@ -24,7 +24,7 @@ return [
     ],
     'myKey' => [
         /* SMTP hostname with path, e.g. {myimap-server.com:993/imap/ssl}INBOX */
-        'hostname' => '{myimap-server.com.com:993/imap/ssl}',
+        'hostname' => '{myimap-server.com:993/imap/ssl}',
         /* default folder to read from */
         'defaultFolder' => 'INBOX',
         /* SMTP username */
